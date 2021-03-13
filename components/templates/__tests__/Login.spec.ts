@@ -3,7 +3,7 @@ import Login from '../Login.vue'
 
 const commonProps = {
   icon: '',
-  onClick: () => {}
+  onClick: () => {},
 }
 
 const propsData = {
@@ -11,14 +11,14 @@ const propsData = {
     { ...commonProps, text: 'Google' },
     { ...commonProps, text: 'Github' },
     { ...commonProps, text: 'Twitter' },
-  ]
+  ],
 }
 
 describe('ログインページ', () => {
   let dom: Wrapper<Login>
   beforeEach(() => {
     dom = shallowMount(Login, {
-      propsData
+      propsData,
     })
   })
 
