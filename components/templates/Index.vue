@@ -17,7 +17,21 @@
           <TodoForm :add-todo-item="addTodoItem" />
         </div>
 
-        <div class="Index__items" />
+        <!-- Todoに登録したアイテムの表示 -->
+        <div class="Index__items">
+          <div
+            v-for="(item, index) in items"
+            :key="`${item.content}-${index}`"
+            class="Index__item"
+          >
+            <TodoItem
+              :content="item.content"
+              :limit="item.limit"
+              :created-at="item.createdAt"
+              :delete-todo-item="() => deleteTodoItem(item.documentId)"
+            />
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -25,11 +39,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Item as TodoItemType } from '../../types/todo.type'
 import TodoForm from '../organisms/TodoForm.vue'
+import TodoItem from '../organisms/TodoItem.vue'
 
 @Component({
   components: {
     TodoForm,
+    TodoItem,
   },
 })
 export default class Index extends Vue {
@@ -41,11 +58,25 @@ export default class Index extends Vue {
   userName!: string
 
   @Prop({
+    type: Array,
+    required: true,
+    default: () => [],
+  })
+  items!: TodoItemType[]
+
+  @Prop({
     type: Function,
     required: true,
     default: () => {},
   })
   addTodoItem!: (content: string, limit: string) => void
+
+  @Prop({
+    type: Function,
+    required: true,
+    default: () => {},
+  })
+  deleteTodoItem!: (documentId: string) => void
 }
 </script>
 
