@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import firebase from '@/plugins/firebase'
-import { userStore } from '@/store'
+import { userStore, todoStore } from '@/store'
 import { Item as TodoItemType } from '../types/todo.type'
 import IndexTemplate from '../components/templates/Index.vue'
 
@@ -24,20 +24,21 @@ import IndexTemplate from '../components/templates/Index.vue'
 })
 export default class Index extends Vue {
   userName: string = userStore.userName
+  addTodoItem(content: string, limit: string) {
+    todoStore.add({ content, limit })
+  }
 
-  addTodoItem() {}
+  deleteTodoItem(documentId: string) {
+    todoStore.delete(documentId)
+  }
 
-  deleteTodoItem() {}
+  async created() {
+    await todoStore.fetch()
+  }
 
-  items: TodoItemType[] = [
-    {
-      documentId: 'xxxx',
-      content: 'あいうえお',
-      limit: '2021-03-14',
-      createdAt: '2021-03-14',
-      updatedAt: '2021-03-14',
-    },
-  ]
+  get items(): TodoItemType[] {
+    return todoStore.displayItems
+  }
 
   async logout() {
     await firebase.auth().signOut()
