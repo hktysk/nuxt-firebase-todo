@@ -8,7 +8,7 @@
       <div class="Index__title">
         {{ userName }}のTodoアプリ
 
-        <div class="Index__logout">ログアウト</div>
+        <div class="Index__logout" @click="logout">ログアウト</div>
       </div>
 
       <div class="Index__todoBody">
@@ -77,6 +77,13 @@ export default class Index extends Vue {
     default: () => {},
   })
   deleteTodoItem!: (documentId: string) => void
+
+  @Prop({
+    type: Function,
+    required: true,
+    default: () => {},
+  })
+  logout!: () => void
 }
 </script>
 
