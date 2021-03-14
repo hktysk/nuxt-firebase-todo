@@ -1,7 +1,12 @@
 <template>
   <div class="Index">
     <header class="Index__header">
-      <input type="text" class="Index__search" placeholder="アイテム検索" />
+      <input
+        type="text"
+        class="Index__search"
+        placeholder="アイテム検索"
+        @input="onInputSearch"
+      />
     </header>
 
     <main class="Index__main">
@@ -20,7 +25,7 @@
         <!-- Todoに登録したアイテムの表示 -->
         <div class="Index__items">
           <div
-            v-for="(item, index) in items"
+            v-for="(item, index) in displayItems"
             :key="`${item.content}-${index}`"
             class="Index__item"
           >
@@ -84,6 +89,20 @@ export default class Index extends Vue {
     default: () => {},
   })
   logout!: () => void
+
+  get displayItems() {
+    return this.items.filter((row) => row.content.includes(this.searchKeyword))
+  }
+
+  /*
+   * v-modelはchangeイベントと同じタイミングなので,
+   * oninputを使用する.
+   */
+  onInputSearch({ target: { value } }: any) {
+    this.searchKeyword = value
+  }
+
+  searchKeyword: string = ''
 }
 </script>
 
